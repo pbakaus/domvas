@@ -115,10 +115,10 @@ domvas.toImage(document.getElementById("dom"), function() {
 <h3>Caveats</h3>
 
       <ul>
-        <li><strong>Internet Explorer</strong> is not supported, at it doesn't support the foreignObject tag in SVG.</li>
+        <li><strong>Internet Explorer</strong> is not supported, as it doesn't support the foreignObject tag in SVG.</li>
         <li>SVG's foreignObject is subject to strong security – meaning any external content will likely fail (i.e. iframes, web fonts)</li>
         <li>The DOM object is <strong>not linked, but copied</strong> – if you change the style of the DOM object, it will not automatically update in Canvas</li>
-        <li>Content outside the bounding box of the element will be cut of per default if painted to Canvas. Don't worry though, simply pass a more confortable offset to the toImage function (see above)</li>
+        <li>Content outside the bounding box of the element will be cut off per default if painted to Canvas. Don't worry though, simply pass a more confortable offset to the toImage function (see above)</li>
       </ul>
 
 <h3>Credits / License</h3>
