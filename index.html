@@ -6,7 +6,35 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Domvas : Domvas implements the missing piece that connects the DOM and Canvas." />
 
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,300' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <style type="text/css">
+
+      #dom {
+        font-family: Arial;
+        border: 5px solid rgba(0,0,0,0.2);
+        border-radius: 10px;
+        width: 260px;
+        padding: 5px 20px;
+        background: #4f8eff;
+
+        text-shadow: 1px 1px 0 #264782;
+        line-height: 1.4em;
+
+        margin: 20px;
+      }
+
+      #dom p {
+        color: rgba(255,255,255,0.8);
+      }
+
+      #dom strong {
+        color: #fff;
+        font-style: italic;
+      }
+
+    </style>
 
     <title>Domvas</title>
   </head>
@@ -19,7 +47,7 @@
           <a id="forkme_banner" href="https://github.com/pbakaus/domvas">View on GitHub</a>
 
           <h1 id="project_title">Domvas</h1>
-          <h2 id="project_tagline">Domvas implements the missing piece that connects the DOM and Canvas.</h2>
+          <h2 id="project_tagline">Implementing the missing piece that connects the DOM and Canvas.</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/pbakaus/domvas/zipball/master">Download this project as a .zip file</a>
@@ -31,44 +59,80 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
+        <h3>Wut?</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p><strong>Domvas implements the missing piece that connects the DOM and Canvas</strong>. It gives to the ability to take arbitrary DOM content and paint it to a Canvas of your choice.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<p>That dialog that is a pain to layout in Canvas but needs to be animated? Yep. Always wanted to use CSS transforms in Canvas? Yep. I think you get the idea.</p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h3>Demo</h3>
 
-<h3>Designer Templates</h3>
+    <div class="sub">
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+      <div style='font-size:30px' id="dom">
+        <p>EHRMAGERD <strong>DOM IN CANVAS</strong>!</p>
+      </div>
 
-<h3>Rather Drive Stick?</h3>
+      <canvas id="test" width="350" height="170"></canvas>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+    </div>
 
-<h3>Authors and Contributors</h3>
+<h3>Usage</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<pre><code>var canvas = document.getElementById("test");
+var context = canvas.getContext('2d');
 
-<h3>Support or Contact</h3>
+domvas.toImage(document.getElementById("dom"), function() {
+  context.drawImage(this, 20, 20);
+});</code></pre>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>Extended documentation:</p>
+
+<pre><code>domvas.toImage(domElement, readyCallback, width, height, left, top);</code></pre>
+
+
+
+<h3>How it works</h3>
+
+<p>Domvas uses a feature of SVG that allows you to embed XHTML content into the SVG – and as you might know, the actual SVG can be used as a data uri, and therefore behaves like a standard image.</p>
+
+<p>I have written about this technique in 2008 <a href="http://paulbakaus.com/2008/08/19/css-transforms-for-firefox/">when I brought CSS transforms to browsers that did not have them</a>. It took a little more experimentation to transform it into a reusable plugin: HTML content needs to be serialized to XML, and all styles have to be inlined.</p>
+
+<h3>Caveats</h3>
+
+      <ul>
+        <li><strong>Internet Explorer</strong> is not supported, at it doesn't support the foreignObject tag in SVG.</li>
+        <li>SVG's foreignObject is subject to strong security – meaning any external content will likely fail (i.e. iframes, web fonts)</li>
+        <li>The DOM object is <strong>not linked, but copied</strong> – if you change the style of the DOM object, it will not automatically update in Canvas</li>
+        <li>Content outside the bounding box of the element will be cut of per default if painted to Canvas. Don't worry though, simply pass a more confortable offset to the toImage function (see above)</li>
+      </ul>
+
+<h3>Credits / License</h3>
+
+<p>&copy;2012 Paul Bakaus. Licensed under MIT. Reach out on <a href='http://twitter.com/pbakaus'>Twitter</a>!</p>
+ 
       </section>
     </div>
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">Domvas maintained by <a href="https://github.com/pbakaus">pbakaus</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        <p class="copyright">Domvas by <a href="https://github.com/pbakaus">Paul Bakaus</a>.</p>
       </footer>
     </div>
 
-    
+    <script src="//raw.github.com/pbakaus/domvas/master/src/domvas.min.js"></script>
+    <script>
+      
+      var canvas = document.getElementById("test");
+      var context = canvas.getContext('2d');
+
+      domvas.toImage(document.getElementById("dom"), function() {
+        // Look ma, I just converted this element to an image and can now to funky stuff!
+        context.drawImage(this, 20, 20);
+      });
+
+    </script>  
 
   </body>
 </html>
