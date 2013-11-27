@@ -1,14 +1,13 @@
-"use strict";
-
-(function() {
+(function(window, document) {
+    "use strict";
 
 	var supportsCSSText = getComputedStyle(document.body).cssText !== "";
 
-	function copyCSS(elem, origElem, log) {
+	function copyCSS(elem, origElem) {
 
 		var computedStyle = getComputedStyle(origElem);
 
-		if(supportsCSSText) {
+		if (supportsCSSText) {
 			elem.style.cssText = computedStyle.cssText;
 
 		} else {
@@ -30,15 +29,17 @@
 		var origChildren = origElem.querySelectorAll('*');
 
 		// copy the current style to the clone
-		copyCSS(elem, origElem, 1);
+		copyCSS(elem, origElem);
 
 		// collect all nodes within the element, copy the current style to the clone
 		Array.prototype.forEach.call(children, function(child, i) {
 			copyCSS(child, origChildren[i]);
 		});
+        
+        var elstyle = elem.style;
 
 		// strip margins from the outer element
-		elem.style.margin = elem.style.marginLeft = elem.style.marginTop = elem.style.marginBottom = elem.style.marginRight = '';
+		elstyle.margin = elstyle.marginLeft = elstyle.marginTop = elstyle.marginBottom = elstyle.marginRight = '';
 
 	}
 
@@ -62,11 +63,12 @@
 
 			// Create well formed data URL with our DOM string wrapped in SVG
 			var dataUri = "data:image/svg+xml," +
-				"<svg xmlns='http://www.w3.org/2000/svg' width='" + ((width || origElem.offsetWidth) + left) + "' height='" + ((height || origElem.offsetHeight) + top) + "'>" +
-					"<foreignObject width='100%' height='100%' x='" + left + "' y='" + top + "'>" +
-					serialized +
-					"</foreignObject>" +
-				"</svg>";
+				"<svg xmlns='http://www.w3.org/2000/svg' width='" +
+                ((width || origElem.offsetWidth) + left) + "' height='" +
+                ((height || origElem.offsetHeight) + top) + "'>" +
+				"<foreignObject width='100%' height='100%' x='" + left + "' y='" + top + "'>" +
+				serialized +
+				"</foreignObject></svg>";
 
 			// create new, actual image
 			var img = new Image();
@@ -83,5 +85,5 @@
 
 	};
 
-})();
+})(window, document);
 
