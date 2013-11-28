@@ -1,5 +1,5 @@
 (function(window, document) {
-    "use strict";
+	"use strict";
 
 	var supportsCSSText = getComputedStyle(document.body).cssText !== "";
 
@@ -36,7 +36,7 @@
 			copyCSS(child, origChildren[i]);
 		});
         
-        var elstyle = elem.style;
+		var elstyle = elem.style;
 
 		// strip margins from the outer element
 		elstyle.margin = elstyle.marginLeft = elstyle.marginTop = elstyle.marginBottom = elstyle.marginRight = '';
